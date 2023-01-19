@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokemon API</title>
+</head>
+<body>
+    <button id="get-pokemon">Get Pokemon</button>
+    <div id="pokemon-info"></div>
+    <script>
+        const button = document.querySelector("#get-pokemon");
+        button.addEventListener("click", () => {
+            const input = prompt("Enter the name or id of a Pokemon:");
+            fetch(`https://pokeapi.co/api/v2/pokemon/${input}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    // check if there is already an existing element with the Pokemon's info
+                    const existingPokemon = document.querySelector("#pokemon-info");
+                    if (existingPokemon) {
+                        // remove the existing element
+                        existingPokemon.remove();
+                    }
+                    // create a new div element
+                    const div = document.createElement("div");
+                    div.id = "pokemon-info";
+                    // create a new paragraph element for the name
+                    const name = document.createElement("p");
+                    name.textContent = data.name;
+                    div.appendChild(name);
+                    // get the types of the Pokemon
+                    const types = data.types;
+                    // create a new p element for each type
+                    types.forEach(type => {
+                        const typeEl = document.createElement("p");
+                        typeEl.textContent = `Type: ${type.type.name}`;
+                        div.appendChild(typeEl);
+                    });
+                    // get the sprites URLs
+                    const sprites = data.sprites;
+                    // create an image element for each sprite
+                    Object.values(sprites)
+                        .filter(sprite => sprite)
+                        .forEach(sprite => {
+                            const img = document.createElement("img");
+                            img.src = sprite;
+                            div.appendChild(img);
+                        });
+                    // add the element to the page
+                    document.body.appendChild(div);
+                });
+        });
+    </script>
+</body>
+</html>
