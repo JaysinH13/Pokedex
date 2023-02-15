@@ -1,53 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pokemon API</title>
+    <meta charset="UTF-8">
+    <title>Pokédex Lookup</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getDetails() {
+            var input = $('#pokeInput').val();
+            var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
+            $.getJSON(url, function(data) {
+                var name = data.name;
+                var id = data.id;
+                var types = data.types.map(function(type) {
+                    return type.type.name;
+                }).join(', ');
+                var abilities = data.abilities.map(function(ability) {
+                    return ability.ability.name;
+                }).join(', ');
+                var height = data.height;
+                var weight = data.weight;
+                var imgSrc = data.sprites.front_default;
+                $('#name').text(name);
+                $('#id').text(id);
+                $('#types').text(types);
+                $('#abilities').text(abilities);
+                $('#height').text(height);
+                $('#weight').text(weight);
+                $('#img').attr('src', imgSrc);
+                $('#error').hide();
+                $('#pokeData').show();
+            }).fail(function() {
+                $('#pokeData').hide();
+                $('#error').show();
+            });
+        }
+    </script>
 </head>
 <body>
-    <button id="get-pokemon">Get Pokemon</button>
-    <div id="pokemon-info"></div>
-    <script>
-        const button = document.querySelector("#get-pokemon");
-        button.addEventListener("click", () => {
-            const input = prompt("Enter the name or id of a Pokemon:");
-            fetch(`https://pokeapi.co/api/v2/pokemon/${input}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    // check if there is already an existing element with the Pokemon's info
-                    const existingPokemon = document.querySelector("#pokemon-info");
-                    if (existingPokemon) {
-                        // remove the existing element
-                        existingPokemon.remove();
-                    }
-                    // create a new div element
-                    const div = document.createElement("div");
-                    div.id = "pokemon-info";
-                    // create a new paragraph element for the name
-                    const name = document.createElement("p");
-                    name.textContent = data.name;
-                    div.appendChild(name);
-                    // get the types of the Pokemon
-                    const types = data.types;
-                    // create a new p element for each type
-                    types.forEach(type => {
-                        const typeEl = document.createElement("p");
-                        typeEl.textContent = `Type: ${type.type.name}`;
-                        div.appendChild(typeEl);
-                    });
-                    // get the sprites URLs
-                    const sprites = data.sprites;
-                    // create an image element for each sprite
-                    Object.values(sprites)
-                        .filter(sprite => sprite)
-                        .forEach(sprite => {
-                            const img = document.createElement("img");
-                            img.src = sprite;
-                            div.appendChild(img);
-                        });
-                    // add the element to the page
-                    document.body.appendChild(div);
-                });
-        });
-    </script>
+    <h1>Pokédex Lookup</h1>
+    <p>Enter a Pokémon name or Pokédex number:</p>
+    <input type="text" id="pokeInput">
+    <button onclick="getDetails()">Go</button>
+    <div id="pokeData" style="display:none;">
+        <h2><span id="name"></span> (#<span id="id"></span>)</h2>
+        <img id="img">
+        <dl>
+            <dt>Types:</dt>
+            <dd><span id="types"></span></dd>
+            <dt>Abilities:</dt>
+            <dd><span id="abilities"></span></dd>
+            <dt>Height:</dt>
+            <dd><span id="height"></span> decimeters</dd>
+            <dt>Weight:</dt>
+            <dd><span id="weight"></span> hectograms</dd>
+        </dl>
+    </div>
+    <div id="error" style="display:none;">
+        <p>Error: Could not find Pokémon. Please check your input.</p>
+    </div>
 </body>
 </html>
