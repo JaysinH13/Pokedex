@@ -25,7 +25,10 @@
                     return move.move.name;
                 }).join(', ');
                 var stats = data.stats.map(function (stats) {
-                    return stats.stat.name;
+                    let stat = {}
+                    stat[stats.stat.name] = stats.base_stat;
+                    console.log(stat);
+                    return stat;
                 }).join(', ');
 
                 $('#name').text(name);
