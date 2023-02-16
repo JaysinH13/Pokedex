@@ -21,48 +21,26 @@
                 var height = data.height;
                 var weight = data.weight;
                 var imgSrc = data.sprites.front_default;
-                var forms = data.forms.map(function (form) {
-                    return '<option value="' + form.url + '">' + form.name + '</option>';
-                }).join('');
+                var moves = data.moves.map(function (move) {
+                    return move.move.name;
+                }).join(', ');
+
                 $('#name').text(name);
                 $('#id').text(id);
                 $('#types').text(types);
                 $('#abilities').text(abilities);
                 $('#height').text(height);
                 $('#weight').text(weight);
+                $('#moves').text(moves);
                 $('#img').attr('src', imgSrc);
-                $('#forms').html(forms);
                 $('#error').hide();
                 $('#pokeData').show();
-                getFormDetails(data.forms[0].url); // get details for the first form by default
             }).fail(function () {
                 $('#pokeData').hide();
                 $('#error').show();
             });
         }
 
-        function getFormDetails(url) {
-            $.getJSON(url, function (data) {
-                var name = data.name;
-                var id = data.id;
-                var types = data.types.map(function (type) {
-                    return type.type.name;
-                }).join(', ');
-                var imgSrc = data.sprites.front_default;
-                var stats = data.stats.map(function (stat) {
-                    return '<tr><td>' + stat.stat.name + ':</td><td>' + stat.base_stat + '</td></tr>';
-                }).join('');
-                var moves = data.moves.slice(0, 5).map(function (move) {
-                    return move.move.name;
-                }).join(', ');
-                $('#name').text(name);
-                $('#id').text(id);
-                $('#types').text(types);
-                $('#img').attr('src', imgSrc);
-                $('#stats').html(stats);
-                $('#moves').text(moves);
-            });
-        }
     </script>
 </head>
 
@@ -80,9 +58,11 @@
             <dt>Abilities:</dt>
             <dd><span id="abilities"></span></dd>
             <dt>Height:</dt>
-            <dd><span id="height"></span> decimeters</dd>
+            <dd><span id="height"></span> meters </dd>
             <dt>Weight:</dt>
-            <dd><span id="weight"></span> hectograms</dd>
+            <dd><span id="weight"></span> kilograms </dd>
+            <dt>Moves:</dt>
+            <dd><span id="moves"></span></dd>
         </dl>
     </div>
     <div id="error" style="display:none;">
