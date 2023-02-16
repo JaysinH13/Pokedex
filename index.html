@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Pokédex</title>
@@ -8,18 +9,21 @@
         function getDetails() {
             var input = $('#pokeInput').val();
             var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
-            $.getJSON(url, function(data) {
+            $.getJSON(url, function (data) {
                 var name = data.name;
                 var id = data.id;
-                var types = data.types.map(function(type) {
+                var types = data.types.map(function (type) {
                     return type.type.name;
                 }).join(', ');
-                var abilities = data.abilities.map(function(ability) {
+                var abilities = data.abilities.map(function (ability) {
                     return ability.ability.name;
                 }).join(', ');
                 var height = data.height;
                 var weight = data.weight;
                 var imgSrc = data.sprites.front_default;
+                var forms = data.forms.map(function (form) {
+                    return '<option value="' + form.url + '">' + form.name + '</option>';
+                }).join('');
                 $('#name').text(name);
                 $('#id').text(id);
                 $('#types').text(types);
@@ -27,15 +31,41 @@
                 $('#height').text(height);
                 $('#weight').text(weight);
                 $('#img').attr('src', imgSrc);
+                $('#forms').html(forms);
                 $('#error').hide();
                 $('#pokeData').show();
-            }).fail(function() {
+                getFormDetails(data.forms[0].url); // get details for the first form by default
+            }).fail(function () {
                 $('#pokeData').hide();
                 $('#error').show();
             });
         }
+
+        function getFormDetails(url) {
+            $.getJSON(url, function (data) {
+                var name = data.name;
+                var id = data.id;
+                var types = data.types.map(function (type) {
+                    return type.type.name;
+                }).join(', ');
+                var imgSrc = data.sprites.front_default;
+                var stats = data.stats.map(function (stat) {
+                    return '<tr><td>' + stat.stat.name + ':</td><td>' + stat.base_stat + '</td></tr>';
+                }).join('');
+                var moves = data.moves.slice(0, 5).map(function (move) {
+                    return move.move.name;
+                }).join(', ');
+                $('#name').text(name);
+                $('#id').text(id);
+                $('#types').text(types);
+                $('#img').attr('src', imgSrc);
+                $('#stats').html(stats);
+                $('#moves').text(moves);
+            });
+        }
     </script>
 </head>
+
 <body>
     <h1>Pokédex</h1>
     <p>Enter a Pokémon name or Pokédex number:</p>
@@ -59,4 +89,5 @@
         <p>Error: Could not find Pokémon. Please check your input.</p>
     </div>
 </body>
+
 </html>
