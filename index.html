@@ -24,6 +24,9 @@
                 var moves = data.moves.map(function (move) {
                     return move.move.name;
                 }).join(', ');
+                var stats = data.stats.map(function (stats) {
+                    return stats.stat.name;
+                }).join(', ');
 
                 $('#name').text(name);
                 $('#id').text(id);
@@ -32,6 +35,7 @@
                 $('#height').text(height);
                 $('#weight').text(weight);
                 $('#moves').text(moves);
+                $('#stats').text(stats);
                 $('#img').attr('src', imgSrc);
                 $('#error').hide();
                 $('#pokeData').show();
@@ -46,7 +50,7 @@
 
 <body>
     <h1>Pokédex</h1>
-    <p>Enter a Pokémon name or Pokédex number:</p>
+    <p>Enter a Pokémon name (lowercase) or Pokédex number:</p>
     <input type="text" id="pokeInput">
     <button onclick="getDetails()">Go</button>
     <div id="pokeData" style="display:none;">
@@ -63,6 +67,8 @@
             <dd><span id="weight"></span> kilograms </dd>
             <dt>Moves:</dt>
             <dd><span id="moves"></span></dd>
+            <dt>Base Stats:</dt>
+            <dd><span id="stats"></span></dd>
         </dl>
     </div>
     <div id="error" style="display:none;">
