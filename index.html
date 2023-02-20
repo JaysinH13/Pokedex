@@ -25,9 +25,10 @@
                     return move.move.name;
                 }).join(', ');
                 var stats = data.stats.map(function (stats) {
-                    let stat = {}
-                    stat[stats.stat.name] = stats.base_stat;
-                    console.log(stat);
+                    //made the information into a string than send it off to the page
+                    let stat = `[${stats.stat.name} = ${stats.base_stat}]`
+                    //stat[stats.stat.name] = stats.base_stat;
+                   // console.log(stat);
                     return stat;
                 }).join(', ');
 
