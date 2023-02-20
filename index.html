@@ -13,7 +13,7 @@
                 var name = data.name;
                 var id = data.id;
                 var types = data.types.map(function (type) {
-                    return type.type.name;
+                    return type.type.name.charAt(0).toUpperCase() +type.type.name.slice(1);
                 }).join(', ');
                 var abilities = data.abilities.map(function (ability) {
                     return ability.ability.name;
@@ -26,7 +26,7 @@
                 }).join(', ');
                 var stats = data.stats.map(function (stats) {
                     //made the information into a string than send it off to the page
-                    let stat = `[${stats.stat.name} = ${stats.base_stat}]`
+                    let stat = `${stats.stat.name.charAt(0).toUpperCase() + stats.stat.name.slice(1)} = ${stats.base_stat}`
                     //stat[stats.stat.name] = stats.base_stat;
                    // console.log(stat);
                     return stat;
