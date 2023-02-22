@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokédex</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -22,7 +24,8 @@
                 var weight = data.weight;
                 var imgSrc = data.sprites.front_default;
                 var moves = data.moves.map(function (move) {
-                    return move.move.name;
+                    let moves = `${move.move.name.charAt(0).toUpperCase() + move.move.name.slice(1)} + ${move.version_group_details.length(-2).name}`
+                    // return move.move.name;
                 }).join(', ');
                 var stats = data.stats.map(function (stats) {
                     //made the information into a string than send it off to the page
@@ -66,9 +69,9 @@
             <dt>Abilities:</dt>
             <dd><span id="abilities"></span></dd>
             <dt>Height:</dt>
-            <dd><span id="height"></span> meters </dd>
+            <dd><span id="height"></span> Meters </dd>
             <dt>Weight:</dt>
-            <dd><span id="weight"></span> kilograms </dd>
+            <dd><span id="weight"></span> Kilograms </dd>
             <dt>Moves:</dt>
             <dd><span id="moves"></span></dd>
             <dt>Base Stats:</dt>
