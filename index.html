@@ -15,23 +15,41 @@
                 var name = data.name;
                 var id = data.id;
                 var types = data.types.map(function (type) {
-                    return type.type.name.charAt(0).toUpperCase() +type.type.name.slice(1);
+                    return type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
                 }).join(', ');
                 var abilities = data.abilities.map(function (ability) {
-                    return ability.ability.name;
+                    return ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1);
                 }).join(', ');
                 var height = data.height;
                 var weight = data.weight;
                 var imgSrc = data.sprites.front_default;
-                var moves = data.moves.map(function (move) {
-                    let moves = `${move.move.name.charAt(0).toUpperCase() + move.move.name.slice(1)} + ${move.version_group_details.length(-2).name}`
-                    // return move.move.name;
-                }).join(', ');
+                var imgSrcShiny = data.sprites.front_shiny;
+                var moves = data.moves
+                    .filter(move => move.move && move.move.name)
+                    .map(move => {
+                        //For every move it goes through and grabs the last version and shows the latest info on that move for the selected pokemon
+                        let versionDetails = move.version_group_details[move.version_group_details.length - 1];
+                        let level = versionDetails ? `(${versionDetails.level_learned_at})` : '';
+                        let method = '';
+                        //The Following Code looks for moves learned via machine egg or tutor is will set the method learned to TMm, Egg, or Tutor.
+                        if (versionDetails && versionDetails.move_learn_method.name === 'machine') {
+                            method = ' (TM)';
+                        } else if (versionDetails && versionDetails.move_learn_method.name === 'egg') {
+                            method = ' (Egg)';
+                        } else if (versionDetails && versionDetails.move_learn_method.name === 'tutor') {
+                            method = ' (Tutor)';
+                        }
+                        // Takes moves that have the method Tutor, TM, or Egg and removes the level
+                        if (level === '(0)' && (method === ' (Tutor)' || method === ' (TM)' || method === ' (Egg)')) {
+                            level = '';
+                        }
+                        return `${move.move.name.charAt(0).toUpperCase() + move.move.name.slice(1)} ${level}${method}`;
+                    }).join(', ');
                 var stats = data.stats.map(function (stats) {
                     //made the information into a string than send it off to the page
                     let stat = `${stats.stat.name.charAt(0).toUpperCase() + stats.stat.name.slice(1)} = ${stats.base_stat}`
                     //stat[stats.stat.name] = stats.base_stat;
-                   // console.log(stat);
+                    // console.log(stat);
                     return stat;
                 }).join(', ');
 
@@ -44,6 +62,7 @@
                 $('#moves').text(moves);
                 $('#stats').text(stats);
                 $('#img').attr('src', imgSrc);
+                $('#imgShiny').attr('src', imgSrcShiny);
                 $('#error').hide();
                 $('#pokeData').show();
             }).fail(function () {
@@ -63,6 +82,7 @@
     <div id="pokeData" style="display:none;">
         <h2><span id="name"></span> (#<span id="id"></span>)</h2>
         <img id="img">
+        <img id="imgShiny">
         <dl>
             <dt>Types:</dt>
             <dd><span id="types"></span></dd>
