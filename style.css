@@ -1,0 +1,11 @@
+body {
+    text-align: center;
+}
+#moves1 {
+    text-align: left;
+}
+html {
+    border: 12px solid;
+    border-color: red;
+
+}
