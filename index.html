@@ -18,7 +18,11 @@
                     return type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
                 }).join(', ');
                 var abilities = data.abilities.map(function (ability) {
-                    return ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1);
+                    let hidden = '';
+                    if (ability.is_hidden == true) {
+                        hidden = " (HA)"
+                    } 
+                    return `${ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1)} ${hidden}`
                 }).join(', ');
                 var height = data.height;
                 var weight = data.weight;
