@@ -6,7 +6,7 @@ body {
 }
 html {
     border: 12px solid;
-    border-color: red;
+    border-color: blue;
 
 }
 /* all the css below is for the autocomplete which is a lot */
