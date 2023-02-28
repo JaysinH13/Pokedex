@@ -9,6 +9,14 @@ html {
     border-color: blue;
 
 }
+#img{
+    width:115px;
+    height: auto;
+}
+#imgShiny{
+    width:115px;
+    height: auto;
+}
 /* all the css below is for the autocomplete which is a lot */
 .ui-autocomplete {
     max-height: 100px;
