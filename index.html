@@ -5,12 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Pokédex</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
+
+        // the code below will get the whole list of the pokemon name. i use xhr instead of jquery is because i can't figured out a way to make it async.
+        var pokelist = [];
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET','https://pokeapi.co/api/v2/pokemon/?limit=100000',false)
+        xhr.send(null)
+        data = JSON.parse(xhr.response)
+        for (let i = 0; i < data.results.length; i++) {
+            pokelist.push(data.results[i].name)
+         }
+
         function getDetails() {
             var input = $('#pokeInput').val();
             var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
+            
+
             $.getJSON(url, function (data) {
                 var name = data.name;
                 var id = data.id;
@@ -114,6 +129,16 @@
                 $('#error').show();
             });
         }
+        // this will display the autocomplete for the pokeInput. 
+        //sadly because of the css
+        //it have to have a lot more addition to it to make a proper autocomplete layout.
+        $(function () {
+            $("#pokeInput").autocomplete({
+                
+                source: pokelist,
+            });
+        });
+
 
     </script>
 </head>
@@ -128,15 +153,11 @@
         <img id="img">
         <img id="imgShiny">
         <dl>
-            <dt>Types:</dt>
-            <dd><span id="types"></span></dd>
-            <dt>Abilities:</dt>
-            <dd><span id="abilities"></span></dd>
-            <dt>Height:</dt>
-            <dd><span id="height"></span> Meters </dd>
-            <dt>Weight:</dt>
-            <dd><span id="weight"></span> Kilograms </dd>
-            <dt>Moves:</dt>
+            <dt>Types: <span id="types"></span></dt>
+            <dt>Abilities: <span id="abilities"></span></dt>
+            <dt id="height1">Height: <span id="height"></span> Meters </dt>
+            <dt id='weight1'>Weight: <span id="weight"></span> Kilograms </dt>
+            <dt id="moves1">Moves:</dt>
             <dd><span id="moves"></span></dd>
             <dt>Base Stats:</dt>
             <dd><span id="stats"></span></dd>
