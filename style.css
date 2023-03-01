@@ -4,6 +4,9 @@ body {
 #moves1 {
     text-align: left;
 }
+#moves2 {
+    text-align: left;
+}
 html {
     border: 12px solid;
     border-color: blue;
