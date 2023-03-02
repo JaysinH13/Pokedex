@@ -32,10 +32,10 @@ html {
 .circle2 {
     background: blue;
     border-radius: 75%;
-    width: 55px;
-    height: 55px;
+    width: 56px;
+    height: 56px;
     top: 15px;
-    right: 65.5px;
+    right: 65px;
 }
 .circle3 {
     background: black;
