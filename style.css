@@ -12,12 +12,20 @@ html {
     border-color: blue;
 
 }
+#circle {
+    background: lightblue;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    float:right;
+    top: 100%;
+}
 #img{
-    width:115px;
+    width:125px;
     height: auto;
 }
 #imgShiny{
-    width:115px;
+    width:125px;
     height: auto;
 }
 /* all the css below is for the autocomplete which is a lot */
