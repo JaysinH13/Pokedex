@@ -28,7 +28,7 @@
             
 
             $.getJSON(url, function (data) {
-                var name = data.name;
+                var name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
                 var id = data.id;
                 var types = data.types.map(function (type) {
                     return type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
@@ -45,7 +45,7 @@
                 var imgSrc = data.sprites.front_default;
                 var imgSrcShiny = data.sprites.front_shiny;
 
-                // It huge code block below will sort the moves based on it learn level, and learn method. least to greatest learn level > TM > tutor > Egg
+                // The code block below will sort the moves based on it learn level, and learn method. least to greatest learn level > TM > tutor > Egg
                var movesData = data.moves.sort(function MachineEggsort(a,b){
                     let am = a.version_group_details[a.version_group_details.length - 1].move_learn_method.name
                     let bm = b.version_group_details[b.version_group_details.length - 1].move_learn_method.name
