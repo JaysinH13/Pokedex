@@ -27,16 +27,33 @@
             var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
             
 
+
+            $('#variety-dropdown').on('change', function() {
+				    var varietyName = $(this).val().toLowerCase();
+				    $.get(`https://pokeapi.co/api/v2/pokemon-species/${input}`, function(variety) {
+					    // Display information about the selected variety
+                        var forms = variety.varieties.map(function (varieties) {
+                            for (variety.varieties;;) {
+                                if (varieties.is_default == false) {
+                                    let formSelect = document.createElement('select');
+                                    formSelect.name = "Form"
+                                    for ( variety of variety.varieties) {
+                                        let newOption = document.createElement('option')
+                                        let formName = JSON.stringify(variety.varieties.pokemon.name)
+                                        newOption.innerHTML = formName
+                                        newOption.value = formName
+                                        formSelect.append(newOption)
+                                    }
+                                }
+                                document.getElementById('newerForms').append(formSelect)
+                            } 
+                        }).join(', ');
+                    });
+                });
             $.getJSON(url, function (data) {
                 var name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
                 var id = data.id;
-                $('#variety-dropdown').on('change', function() {
-				var varietyName = $(this).val().toLowerCase();
-				$.get(`https://pokeapi.co/api/v2/pokemon-species/${input}`, function(variety) {
-					// Display information about the selected variety
-					var pokemonInfo = $('#pokemon-info');
-                });
-                });
+            
                 var types = data.types.map(function (type) {
                     return type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
                 }).join(', ');
@@ -164,7 +181,7 @@
     </form>
     <div id="pokeData" style="display:none;">
         <h2><span id="name"></span> (#<span id="id"></span>)</h2>
-        <select id="variety-dropdown"></select>
+        <div id="newerForms"></div>
         <img id="img">
         <img id="imgShiny">
         <dl>
