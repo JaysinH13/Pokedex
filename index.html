@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="UltraBallLA.png">
     <title>Pokédex</title>
@@ -15,54 +15,78 @@
         // the code below will get the whole list of the pokemon name. i use xhr instead of jquery is because i can't figured out a way to make it async.
         var pokelist = [];
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon/?limit=100000', false)
-        xhr.send(null)
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.response);
+                for (let i = 0; i < data.results.length; i++) {
+                    pokelist.push(data.results[i].name);
+                }
+            }
+        };
+        xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon-species/?limit=100000', false);
+        xhr.send(null);
+        xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon/?limit=100000', false);
+        xhr.send(null);
+
         data = JSON.parse(xhr.response)
         for (let i = 0; i < data.results.length; i++) {
             pokelist.push(data.results[i].name)
         }
-
+        
         function getDetails() {
+            document.getElementById('newerForms').innerHTML = "";
             var input = $('#pokeInput').val();
             var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
+            var url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + input
             
-            $('#variety-dropdown').on('change', function () {
-                console.log(`69`);
-                var varietyName = $(this).val().toLowerCase();
-                $.get(`https://pokeapi.co/api/v2/pokemon-species/${input}`, function (variety) {
-                    // Display information about the selected variety
-                    var forms = variety.varieties.map(function (varieties) {
-                        if (variety.varieties.length > 1) {
-                            console.log(`morethan1`);
-                            let formSelect = document.createElement('select');
-                            formSelect.name = "Form"
-                            console.log(`setformselect`);
-                            for (variety of variety.varieties) {
-                                console.log(`into for loop`);
-                                if (varieties.is_default == false) {
-                                    console.log(`69`);
-                                    let newOption = document.createElement('option')
-                                    console.log(`420`);
-                                    let formName = JSON.stringify(variety.varieties.pokemon.name)
-                                    console.log(`69`);
-                                    newOption.innerHTML = formName
-                                    console.log(`420`);
-                                    newOption.value = formName
-                                    console.log(`69`);
-                                    formSelect.append(newOption)
-                                    console.log(`420`);
+            
+            $.get(url2, function (variety) {
+                // Display information about the selected variety
+                var forms = variety.varieties.map(function (varieties) {
+                    if (variety.varieties.length > 1) {
+                        console.log(`morethan1`);
+                        let formSelect = document.createElement('select');
+                        formSelect.name = "Form"
+                        console.log(`setformselect`);
+                        var countForm = 1
+                        for (varieties of variety.varieties) {
+                            console.log(`into for loop`);
+                            countForm++
+                            if (varieties.is_default == false) {
+                                console.log(`69`);
+                                let newOption = document.createElement('option')
+                                console.log(`420`);
+                                let formName = JSON.stringify(varieties.pokemon.name)
+                                console.log(`69`);
+                                newOption.innerHTML = formName
+                                console.log(`420`);
+                                newOption.value = formName
+                                console.log(`69`);
+                                let tempName = JSON.stringify(varieties.pokemon.name)
+                                newOption.onchange = formUpdate(tempName)
+                                function formUpdate(value) {
+                                    let input = value
+                                    getDetails(input);
                                 }
+                                formSelect.append(newOption)
+                                console.log(`420`);
                             }
                             document.getElementById('newerForms').append(formSelect)
                             console.log(`69`);
                         }
-                    }).join(', ');
-                });
+                        while (countForm > 1) {
+                            formSelect.remove(newOption)
+                            countForm--
+                        }
+                    }
+                }).join(', ');
             });
+            
+
             $.getJSON(url, function (data) {
                 var name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
                 var id = data.id;
-                
+
                 var types = data.types.map(function (type) {
                     return type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
                 }).join(', ');
@@ -77,7 +101,7 @@
                 var weight = data.weight;
                 var imgSrc = data.sprites.front_default;
                 var imgSrcShiny = data.sprites.front_shiny;
-                
+
                 // The code block below will sort the moves based on it learn level, and learn method. least to greatest learn level > TM > tutor > Egg
                 var movesData = data.moves.sort(function MachineEggsort(a, b) {
                     let am = a.version_group_details[a.version_group_details.length - 1].move_learn_method.name
@@ -94,8 +118,8 @@
                         case "egg":
                             return 1
                             break;
-                            case "machine":
-                                if (bm == "tutor" || bm == "egg") {
+                        case "machine":
+                            if (bm == "tutor" || bm == "egg") {
                                 return -1
                             } else if (bm == "level-up") {
                                 return 1
@@ -112,11 +136,11 @@
                                 return 0
                             }
                             break;
-                        }
+                    }
                 })
 
 
-                
+
                 var moves = movesData
                     .filter(move => move.move && move.move.name)
                     .map(move => {
@@ -191,7 +215,7 @@
     </form>
     <div id="pokeData" style="display:none;">
         <h2><span id="name"></span> (#<span id="id"></span>)</h2>
-        <div id="variety-dropdown"></div>
+        <div id="newerForms"></div>
         <img id="img">
         <img id="imgShiny">
         <dl>
