@@ -32,13 +32,16 @@
         for (let i = 0; i < data.results.length; i++) {
             pokelist.push(data.results[i].name)
         }
-        
+
+        function formUpdate(value) {
+            let input = value
+            getDetails(input);
+        }
         function getDetails() {
             document.getElementById('newerForms').innerHTML = "";
             var input = $('#pokeInput').val();
             var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
             var url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + input
-            
             
             $.get(url2, function (variety) {
                 // Display information about the selected variety
@@ -48,7 +51,7 @@
                         let formSelect = document.createElement('select');
                         formSelect.name = "Form"
                         console.log(`setformselect`);
-                        var countForm = 1
+                        var countForm = 0
                         for (varieties of variety.varieties) {
                             console.log(`into for loop`);
                             countForm++
@@ -64,24 +67,20 @@
                                 console.log(`69`);
                                 let tempName = JSON.stringify(varieties.pokemon.name)
                                 newOption.onchange = formUpdate(tempName)
-                                function formUpdate(value) {
-                                    let input = value
-                                    getDetails(input);
-                                }
                                 formSelect.append(newOption)
                                 console.log(`420`);
                             }
                             document.getElementById('newerForms').append(formSelect)
                             console.log(`69`);
                         }
-                        while (countForm > 1) {
-                            formSelect.remove(newOption)
-                            countForm--
+                        // while (countForm > 1) {
+                            //     formSelect.remove(newOption)
+                            //     countForm--
+                            // }
                         }
-                    }
-                }).join(', ');
+                    }).join(', ');
             });
-            
+
 
             $.getJSON(url, function (data) {
                 var name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
@@ -190,15 +189,15 @@
         // this will display the autocomplete for the pokeInput. 
         //sadly because of the css
         //it have to have a lot more addition to it to make a proper autocomplete layout.
+        
         $(function () {
             $("#pokeInput").autocomplete({
-
+        
                 source: pokelist,
             });
         });
 
-
-    </script>
+        </script>
 </head>
 
 <div class="box circle"></div>
