@@ -8,17 +8,26 @@ xhr.onreadystatechange = function () {
         for (let i = 0; i < data.results.length; i++) {
             pokelist.push(data.results[i].name);
         }
+        var xhr2 = new XMLHttpRequest();
+        xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4 && xhr2.status === 200) {
+                var data2 = JSON.parse(xhr2.response);
+                // Your existing code for processing the data from the "pokemon" API goes here...
+            }
+        };
+        xhr2.open('GET', 'https://pokeapi.co/api/v2/pokemon/?limit=100000', false);
+        xhr2.send(null);
     }
 };
 xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon-species/?limit=100000', false);
 xhr.send(null);
-xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon/?limit=100000', false);
-xhr.send(null);
 
 data = JSON.parse(xhr.response)
+data2 = JSON.parse(xhr2.response)
 for (let i = 0; i < data.results.length; i++) {
     pokelist.push(data.results[i].name)
 }
+
 
 function formUpdate(value) {
     let input = value
@@ -53,6 +62,7 @@ function getDetails(input) {
                         newOption.value = formName
                         console.log(`69`);
                         let tempName = JSON.stringify(varieties.pokemon.name)
+                        newOption.onclick = () => getDetails(tempName)
                         newOption.onchange = () => formUpdate(tempName)
                         formSelect.append(newOption)
                         console.log(`420`);
