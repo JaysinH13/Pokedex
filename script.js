@@ -62,7 +62,6 @@ function getDetails(input) {
                         newOption.value = formName
                         console.log(`69`);
                         let tempName = JSON.stringify(varieties.pokemon.name)
-                        newOption.onclick = () => getDetails(tempName)
                         newOption.onchange = () => formUpdate(tempName)
                         formSelect.append(newOption)
                         console.log(`420`);
