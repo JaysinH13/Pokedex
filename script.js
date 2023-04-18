@@ -131,7 +131,7 @@ function getDetails(input) {
             }
         })
 
-
+        var bst = []
 
         var moves = movesData
             .filter(move => move.move && move.move.name)
@@ -159,6 +159,7 @@ function getDetails(input) {
             let stat = `${stats.stat.name.charAt(0).toUpperCase() + stats.stat.name.slice(1)} = ${stats.base_stat}`
             //stat[stats.stat.name] = stats.base_stat;
             // console.log(stat);
+            bst.push(stats.base_stat)
             return stat;
         }).join(', ');
 
