@@ -132,6 +132,7 @@ function getDetails(input) {
         })
 
         var bst = []
+        var bsTotal = 0 
 
         var moves = movesData
             .filter(move => move.move && move.move.name)
@@ -160,8 +161,12 @@ function getDetails(input) {
             //stat[stats.stat.name] = stats.base_stat;
             // console.log(stat);
             bst.push(stats.base_stat)
-            return stat;
+            return stat
         }).join(', ');
+        for (let i = 0; i < bst.length; i++) {
+            bsTotal += bst[i]
+        }
+        document.getElementById("bst").innerHTML = bsTotal
 
         $('#name').text(name);
         $('#id').text(id);
@@ -180,13 +185,3 @@ function getDetails(input) {
         $('#error').show();
     });
 }
-// this will display the autocomplete for the pokeInput. 
-//sadly because of the css
-//it have to have a lot more addition to it to make a proper autocomplete layout.
-
-$(function () {
-    $("#pokeInput").autocomplete({
-
-        source: pokelist,
-    });
-});

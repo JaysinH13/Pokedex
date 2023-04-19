@@ -11,6 +11,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="script.js"></script>
+    <script>// this will display the autocomplete for the pokeInput. 
+        //sadly because of the css
+        //it have to have a lot more addition to it to make a proper autocomplete layout.
+        
+        $(function () {
+            $("#pokeInput").autocomplete({
+        
+                source: pokelist,
+            });
+        });</script>
 </head>
 
 <div class="box circle"></div>
@@ -39,8 +49,7 @@
             <dd id="moves2"><span id="moves"></span></dd>
             <dt>Base Stats:</dt>
             <dd><span id="stats"></span></dd>
-            <dt>BST (Base Stat Total):</dt>
-            <dd><script>return bst[] </script> </dd>
+            <dt>Base Stat Total:<span id="bst"></span></dt>
         </dl>
     </div>
     <div id="error" style="display:none;">
