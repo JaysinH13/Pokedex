@@ -11,16 +11,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="script.js"></script>
-    <script>// this will display the autocomplete for the pokeInput. 
-        //sadly because of the css
-        //it have to have a lot more addition to it to make a proper autocomplete layout.
-        
-        $(function () {
-            $("#pokeInput").autocomplete({
-        
-                source: pokelist,
-            });
-        });</script>
+   <script> $(function () {
+        $("#pokeInput").autocomplete({
+            
+            source: pokelist,
+        });
+    });</script>
 </head>
 
 <div class="box circle"></div>
@@ -31,7 +27,7 @@
 <body>
     <h1>Pokédex</h1>
     <p>Enter a Pokémon name (lowercase) or Pokédex number 1-1010:</p>
-    <form onsubmit="getDetails(); return false;">
+    <form onsubmit="getDetails(this[0].value); return false;">
         <input type="text" id="pokeInput">
         <button type="submit">Search</button>
     </form>

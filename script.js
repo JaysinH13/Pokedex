@@ -6,27 +6,20 @@ xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
         var data = JSON.parse(xhr.response);
         for (let i = 0; i < data.results.length; i++) {
+            
             pokelist.push(data.results[i].name);
         }
-        var xhr2 = new XMLHttpRequest();
-        xhr2.onreadystatechange = function () {
-            if (xhr2.readyState === 4 && xhr2.status === 200) {
-                var data2 = JSON.parse(xhr2.response);
-                // Your existing code for processing the data from the "pokemon" API goes here...
-            }
-        };
-        xhr2.open('GET', 'https://pokeapi.co/api/v2/pokemon/?limit=100000', false);
-        xhr2.send(null);
+
     }
 };
 xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon-species/?limit=100000', false);
 xhr.send(null);
 
-data = JSON.parse(xhr.response)
-data2 = JSON.parse(xhr2.response)
-for (let i = 0; i < data.results.length; i++) {
-    pokelist.push(data.results[i].name)
-}
+
+// this will display the autocomplete for the pokeInput. 
+        //sadly because of the css
+        //it have to have a lot more addition to it to make a proper autocomplete layout.
+        
 
 
 function formUpdate(value) {
@@ -35,7 +28,11 @@ function formUpdate(value) {
 }
 function getDetails(input) {
     document.getElementById('newerForms').innerHTML = "";
-    var input = $('#pokeInput').val();
+
+    //var input = $('#pokeInput').val(); have it remove because i just have the html send in the data
+    // to remove the qutation marks around the string so it properly get the pokemon
+     var input = input.replace(/"/g,'')
+     console.log(input);
     var url = 'https://pokeapi.co/api/v2/pokemon/' + input;
     var url2 = 'https://pokeapi.co/api/v2/pokemon-species/' + input
 
@@ -46,30 +43,32 @@ function getDetails(input) {
                 console.log(`morethan1`);
                 let formSelect = document.createElement('select');
                 formSelect.name = "Form"
+                formSelect.id = "varity"
+                // need to have the orginal veneur in here so we can use the onchange function !!!!!!
                 console.log(`setformselect`);
                 var countForm = 0
                 for (varieties of variety.varieties) {
                     console.log(`into for loop`);
                     countForm++
                     if (varieties.is_default == false) {
-                        console.log(`69`);
+                      //  console.log(`69`);
                         let newOption = document.createElement('option')
-                        console.log(`420`);
+                      //  console.log(`420`);
                         let formName = JSON.stringify(varieties.pokemon.name)
-                        console.log(`69`);
+                       // console.log(`69`);
                         newOption.innerHTML = formName
-                        console.log(`420`);
+                       // console.log(`420`);
                         newOption.value = formName
-                        console.log(`69`);
+                       // console.log(`69`);
                         let tempName = JSON.stringify(varieties.pokemon.name)
                         newOption.onchange = () => formUpdate(tempName)
                         formSelect.append(newOption)
-                        console.log(`420`);
+                      //  console.log(`420`);
                     }
                 }
                 document.getElementById('newerForms').innerHTML = "";
                 document.getElementById('newerForms').append(formSelect)
-                console.log(`69`);
+               // console.log(`69`);
             }
         }).join(', ');
     });
@@ -166,6 +165,13 @@ function getDetails(input) {
         for (let i = 0; i < bst.length; i++) {
             bsTotal += bst[i]
         }
+
+        // ot act like a onchange function for the select but however it can not choose the other pokemon that already selected.
+        $('#varity').blur(function() {
+            getDetails($('#varity option:selected').text())
+          });
+
+
         document.getElementById("bst").innerHTML = bsTotal
 
         $('#name').text(name);
