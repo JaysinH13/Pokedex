@@ -90,8 +90,8 @@ function getDetails(input) {
         }).join(', ');
         var height = data.height;
         var weight = data.weight;
-        var imgSrc = data.sprites.front_default;
-        var imgSrcShiny = data.sprites.front_shiny;
+        var imgSrc = data.sprites.other['official-artwork'].front_default;
+        var imgSrcShiny = data.sprites.other['official-artwork'].front_shiny;
 
         // The code block below will sort the moves based on it learn level, and learn method. least to greatest learn level > TM > tutor > Egg
         var movesData = data.moves.sort(function MachineEggsort(a, b) {
