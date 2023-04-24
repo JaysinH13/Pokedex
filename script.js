@@ -45,30 +45,27 @@ function getDetails(input) {
                 formSelect.name = "Form"
                 formSelect.id = "varity"
                 // need to have the orginal veneur in here so we can use the onchange function !!!!!!
-                console.log(`setformselect`);
                 var countForm = 0
+                let defaultOption = document.createElement('option')
+                defaultOption.innerHTML = "Select A Form"
+                defaultOption.value= ""
+                formSelect.append(defaultOption)
+                console.log(`setformselect`);
                 for (varieties of variety.varieties) {
                     console.log(`into for loop`);
                     countForm++
                     if (varieties.is_default == false) {
-                      //  console.log(`69`);
                         let newOption = document.createElement('option')
-                      //  console.log(`420`);
                         let formName = JSON.stringify(varieties.pokemon.name)
-                       // console.log(`69`);
                         newOption.innerHTML = formName
-                       // console.log(`420`);
                         newOption.value = formName
-                       // console.log(`69`);
                         let tempName = JSON.stringify(varieties.pokemon.name)
                         newOption.onchange = () => formUpdate(tempName)
                         formSelect.append(newOption)
-                      //  console.log(`420`);
                     }
                 }
                 document.getElementById('newerForms').innerHTML = "";
                 document.getElementById('newerForms').append(formSelect)
-               // console.log(`69`);
             }
         }).join(', ');
     });
@@ -167,7 +164,7 @@ function getDetails(input) {
         }
 
         // ot act like a onchange function for the select but however it can not choose the other pokemon that already selected.
-        $('#varity').blur(function() {
+        $('#varity').change(function() {
             getDetails($('#varity option:selected').text())
           });
 
