@@ -1,3 +1,33 @@
+var totalPokemonCount; // Declare totalPokemonCount as a global variable
+document.addEventListener("DOMContentLoaded", function () {
+    function fetchTotalPokemonCount() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.response);
+    
+                // Assign the total count of Pokémon species to the global variable
+                totalPokemonCount = data.count;
+                console.log("Total Pokémon Species: " + totalPokemonCount);
+    
+                // Call a function to update the HTML with the count
+                updateTotalCount();
+            }
+        };
+        xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon-species/', false);
+        xhr.send(null);
+    }
+    
+    function updateTotalCount() {
+        // Access the variable and insert its value into the HTML
+        document.getElementById("count").innerHTML = totalPokemonCount;
+    }
+    
+    // Call the function to fetch the total count
+    fetchTotalPokemonCount();  
+    document.getElementById("count").innerHTML = totalPokemonCount;
+});
+
 
 // the code below will get the whole list of the pokemon name. i use xhr instead of jquery is because i can't figured out a way to make it async.
 var pokelist = [];
@@ -14,8 +44,6 @@ xhr.onreadystatechange = function () {
 };
 xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon-species/?limit=100000', false);
 xhr.send(null);
-
-
 // this will display the autocomplete for the pokeInput. 
         //sadly because of the css
         //it have to have a lot more addition to it to make a proper autocomplete layout.
